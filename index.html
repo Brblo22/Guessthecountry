@@ -1,0 +1,229 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<div id="wrapper">
+
+<div id="titel">Guess the country!</div>
+<div id="info">Guess which country is right based on the information you recieve, if you don't get it right in 5 guesses you lose! Remember to always start with a capital letter.</div>
+<div id="entertext">Enter your guess:</div>
+<input type="text" id="enterskrivruta">
+<input type="button" id="enterbutton" value="Submit">
+<div id="rättsvar">Your guess was right!</div>
+<div id="felsvar">You did not get it right in 5 guesses. Game over!</div>
+<input type= "button" id="spelaigen" value="Play again">
+<div id="antalgissningar">Number of guesses left:</div> 
+<input type="button" id="spelaigen2" value="Try again">
+<div id="ett">1</div>
+<div id="två">2</div>
+<div id="tre">3</div>
+<div id="fyra">4</div>
+<div id="fem">5</div>
+<div id="hintstart">Hint:</div>
+<div id="previousguesses">Previous guesses:</div>
+<audio src="IncorrectBuzz.mp3" id="felbuzz"></audio>
+<audio src="CorrectBuzz.wav" id="rättbuzz"></audio>
+<audio src="Bosnien.mp3" id="bosnienwin"></audio>
+<audio src="Tyskland.mp3" id="tysklandwin"></audio>
+<div id="bgheadline"></div>
+<div id="bgmain"></div>
+<div id="bgside"></div>
+<div id="bgmain1"></div>
+<input type="button" id="howto" value="Instructions">
+<div id="closehowto">⇈</div>
+</div>
+
+<script type="text/javascript">
+
+const Countries = ["Sweden", "Germany", "Bosnia", "Ireland", "Poland", "Italy", "Spain", "France", "Greece", "Finland"];
+const Countrysongs = ["Sverige.mp3", "Tyskland.mp3", "Bosnien.mp3", "Irland.mp3", "Polen.mp3", "Italien.mp3", "Spanien.mp3", "Frankrike.mp3", "Grekland.mp3", "Finland.mp3"];
+const Countryhints = ["Hint: Home of the Nobel Prize and known for its meatballs.", "Hint:  Famous for its beer and the Berlin Wall.", "Hint: Known for the historic city of Sarajevo and its beautiful landscapes.", "Hint: The Emerald Isle, famous for its pubs and Celtic music.", "Hint:  Known for its pierogi and the beautiful city of Warsaw."
+, "Hint: Famous for the Leaning Tower of Pisa and delicious gelato.", "Hint: Known for its siestas and the vibrant city of Barcelona.", "Hint: Famous for the Eiffel Tower and its pastries like croissants.", "Hint:  Known for its ancient ruins and the blue waters of the Aegean Sea.", "Hint: This Nordic country is famous for its stunning nature, over two million saunas, and a unique festival celebrating the midnight sun."];
+
+let Slumpland = Math.floor(Math.random() *  Countries.length);
+let Rättlåt = Countrysongs[Slumpland];
+let Rättland = Countries[Slumpland];
+let Rätthint = Countryhints[Slumpland]; 
+let Gissningar = 0;
+let previousguesses1 = document.getElementById("previousguesses");
+let Previousguess = [];
+var audio = new Audio(Rättlåt);
+
+function updateratext(SökRuta) {
+    previousguesses1.textContent = (Previousguess);
+}
+
+
+ 
+document.getElementById("enterbutton").onclick = function () {
+    
+    let Svar = document.getElementById("enterskrivruta").value;
+    let Congrats = document.getElementById("rättsvar");
+    let CongratsClose = document.getElementById("spelaigen")
+    let SökRuta = document.getElementById("enterskrivruta");
+    let Gameover = document.getElementById("felsvar");
+    let Tryagain = document.getElementById("spelaigen2");
+    let Five = document.getElementById("fem");
+    let Four = document.getElementById("fyra");
+    let Three = document.getElementById("tre");
+    let Two = document.getElementById("två");
+    let One = document.getElementById("ett");
+    let Starthint = document.getElementById("hintstart");
+    var audiofel = document.getElementById("felbuzz");
+    var audiorätt = document.getElementById("rättbuzz");
+    var audiobosnia = document.getElementById("bosnienwin");
+    var audiogermany = document.getElementById("tysklandwin");
+    Gissningar++;
+
+    if (Rättland === Svar) {
+        Congrats.style.display = "block";
+        CongratsClose.style.display = "block";
+        Starthint.textContent = "";
+        audiorätt.play();
+        audio.src = Rättlåt; 
+        audio.play(); 
+        Previousguess = [];  
+        updateratext(); 
+    } else {
+        Starthint.textContent = Rätthint;
+        audiofel.play();
+        Previousguess.unshift(SökRuta.value); 
+        updateratext(SökRuta);
+       
+    }
+
+   if (Gissningar === 1) {
+        Four.style.display = "block";
+        Five.style.display = "none";
+    } 
+    else if (Gissningar === 2) {
+        Three.style.display = "block";
+        Four.style.display = "none";
+    } 
+    else if (Gissningar === 3) {
+        Two.style.display = "block";
+        Three.style.display = "none";
+    } 
+    else if (Gissningar === 4) {
+        One.style.display = "block";
+        Two.style.display = "none";
+    }
+    if (Gissningar >=5)  {
+        Gameover.style.display = "block";
+        Tryagain.style.display = "block";
+        Starthint.textContent = "";
+        Previousguess = []; 
+        updateratext(SökRuta);
+    }
+};
+
+
+document.getElementById("spelaigen").onclick = function () {
+    let Grattisruta = document.getElementById("rättsvar");
+    let Stängknapp = document.getElementById("spelaigen");
+    let Skrivruta = document.getElementById("enterskrivruta");
+    let One = document.getElementById("ett");
+    let Four = document.getElementById("fyra");
+    let Three = document.getElementById("tre");
+    let Two = document.getElementById("två");
+    let Five = document.getElementById("fem");
+    let Starthint = document.getElementById("hintstart");
+    let Gameover = document.getElementById("felsvar");
+    let Tryagain = document.getElementById("spelaigen2");
+
+    if (Grattisruta.style.display === "block" || Stängknapp.style.display === "block") {
+        Grattisruta.style.display = "none";
+        Stängknapp.style.display = "none";
+       
+        One.style.display = "none";
+        Two.style.display = "none";
+        Three.style.display = "none";
+        Four.style.display = "none";
+        Five.style.display = "block";
+        Gameover.style.display = "none";
+        Tryagain.style.display = "none";
+        Gissningar = 0;
+        Skrivruta.value = "";
+        Slumpland = Math.floor(Math.random() *  Countries.length);
+        Rättlåt = Countrysongs[Slumpland];
+        Rättland = Countries[Slumpland];
+        Rätthint = Countryhints[Slumpland];
+        Starthint.textContent = "Hint:";
+        previousguesses1.textContent = ("Previous guesses:");
+        audio.pause(); 
+        audio.currentTime = 0;
+    }  
+}
+document.getElementById("spelaigen2").onclick = function () {
+
+    let Gameover = document.getElementById("felsvar");
+    let Tryagain = document.getElementById("spelaigen2");
+    let Skrivruta = document.getElementById("enterskrivruta");
+    let One = document.getElementById("ett");
+    let Five = document.getElementById("fem");
+    let Starthint = document.getElementById("hintstart");
+
+    if (Gameover.style.display === "block" || Tryagain.style.display === "block") {
+        Gameover.style.display = "none";
+        Tryagain.style.display = "none";
+        One.style.display = "none";
+        Five.style.display = "block";
+        Skrivruta.value = "";
+        Gissningar = 0;
+        Slumpland = Math.floor(Math.random() *  Countries.length);
+        Rättlåt = Countrysongs[Slumpland];
+        Rättland = Countries[Slumpland];
+        Rätthint = Countryhints[Slumpland];
+        Starthint.textContent = "Hint:";
+        previousguesses1.textContent = ("Previous guesses:");
+    } 
+    }
+function Lastguesses() {
+    const userGuess = SökRuta.value;
+    if (Gissningar === 1) {
+        Gissningar.textContent = "Previous guesses: "
+    }
+    Gissningar.textContent = `${Gissningar.textContent} ${userGuess}`;
+}
+
+
+
+
+
+document.getElementById("howto").onclick = function () {
+    const toggleDiv = document.getElementById("howto"); 
+    const toggleDiv2 = document.getElementById("bgmain1")
+    const hiddenDiv1 = document.getElementById("bgheadline");
+    const hiddenDiv2 = document.getElementById("titel"); 
+    const hiddenDiv3 = document.getElementById("info");
+    const closeButton = document.getElementById("closehowto");
+   
+
+    if (hiddenDiv1.style.display === "none" || hiddenDiv1.style.display === "") {
+        hiddenDiv1.style.display = "block"; 
+        hiddenDiv2.style.display = "block"; 
+        hiddenDiv3.style.display = "block";
+        closeButton.style.display = "block";
+        toggleDiv.style.display = "none"; 
+        toggleDiv2.style.display = "none";
+    } else {
+        hiddenDiv1.style.display = "none"; 
+        hiddenDiv2.style.display = "none"; 
+        hiddenDiv3.style.display = "none";
+        closeButton.style.display = "none";
+        toggleDiv.style.display = "block"; 
+        toggleDiv2.style.display = "block";
+    }
+}
+</script>
+
+</div>
+
+</body>
+
+</html>
